@@ -64,6 +64,13 @@ var styles = StyleSheet.create({
 });
 
 class SearchPage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      searchString: 'london'
+    };
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -77,6 +84,7 @@ class SearchPage extends Component {
 
       <TextInput
       style={styles.searchInput}
+      value={this.state.searchString}
       placeholder='Search via name or 202postcode'/>
       <TouchableHighlight style={styles.button}
       underlayColor='#99d9f4'>
