@@ -1,6 +1,8 @@
 'use strict';
 
 var React = require('react-native');
+var SearchResults = require('./SearchResults');
+
 var {
   StyleSheet,
   Text,
@@ -63,15 +65,88 @@ var styles = StyleSheet.create({
   }
 });
 
+
+function urlForQueryAndPage(key, value, pageNumber) {
+  var data = {
+      country: 'uk',
+      pretty: '1',
+      encoding: 'json',
+      listing_type: 'buy',
+      action: 'search_listings',
+      page: pageNumber
+  };
+  data[key] = value;
+ 
+  var querystring = Object.keys(data)
+    .map(key => key + '=' + encodeURIComponent(data[key]))
+    .join('&');
+ 
+  return 'http://api.nestoria.co.uk/api?' + querystring;
+};
+
 class SearchPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchString: 'london'
+      searchString: 'london',
+      isLoading: false,
+      message: ''
     };
   }
+  _handleResponse(response) {
+    this.props.navigator.push({
+      title: 'Results',
+      component: SearchResults,
+      passProps: {listings: response.listings}
+    });
+  }
+  _executeQuery(query) {
+    console.log(query);
+    this.setState({ isLoading: true });
+    fetch(query)
+    .then(response => response.json())
+    .then(json => this._handleResponse(json.response))
+    .catch(error => 
+       this.setState({
+        isLoading: false,
+        message: 'Something bad happened ' + error
+     }));
+  }
+   
+  onSearchPressed() {
+    var query = urlForQueryAndPage('place_name', this.state.searchString, 1);
+    this._executeQuery(query);
+  }
 
+  onSearchTextChanged(event) {
+    console.log('onSearchTextChanged');
+    this.setState({ searchString: event.nativeEvent.text });
+    console.log(this.state.searchString);
+  }
+
+  onLocationPressed() {
+    navigator.geolocation.getCurrentPosition(
+      location => {
+        var search = location.coords.latitude + ',' + location.coords.longitude;
+        this.setState({ searchString: search });
+        var query = urlForQueryAndPage('centre_point', search, 1);
+        this._executeQuery(query);
+      },
+      error => {
+        this.setState({
+          message: 'There was a problem with obtaining your location: ' + error
+        });
+      });
+  }
+  
   render() {
+    var spinner = this.state.isLoading ?
+    ( <ActivityIndicatorIOS
+      hidden='true'
+      size='large'/> ) :
+    ( <View/>);
+
+    console.log('SearchPage.render');
     return (
       <View style={styles.container}>
       <Text style={styles.description}>
@@ -85,23 +160,34 @@ class SearchPage extends Component {
       <TextInput
       style={styles.searchInput}
       value={this.state.searchString}
+      onChange={this.onSearchTextChanged.bind(this)}
       placeholder='Search via name or 202postcode'/>
-      <TouchableHighlight style={styles.button}
-      underlayColor='#99d9f4'>
+      <TouchableHighlight 
+        style={styles.button}
+        onPress={this.onSearchPressed.bind(this)}
+
+        underlayColor='#99d9f4'
+        >
+
       <Text style={styles.buttonText}>Go</Text>
       </TouchableHighlight>
       </View>
       <TouchableHighlight style={styles.button}      
-      underlayColor='#99d9f4'>
+      underlayColor='#99d9f4'
+      onPress={this.onLocationPressed.bind(this)}
+      >
       <Text style={styles.buttonText}>Location2</Text>
       </TouchableHighlight>
       <Image source={require('image!house')} style={styles.image}/>
+      {spinner}
       <Text style={styles.description}>
       (below the image2)
       </Text>
+      <Text style={styles.description}>{this.state.message}</Text>
+
       </View>
       );
-  }
+}
 }
 
 module.exports = SearchPage;

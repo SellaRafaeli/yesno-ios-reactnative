@@ -7,6 +7,7 @@
 var React = require('react-native');
 var SearchPage = require('./searchPage');
 
+
 var {
   AppRegistry,
   StyleSheet,
