@@ -2,7 +2,7 @@
 
 var React = require('react-native');
 var SearchResults = require('./SearchResults');
-
+//debugger
 var {
   StyleSheet,
   Text,
@@ -11,7 +11,8 @@ var {
   TouchableHighlight,
   ActivityIndicatorIOS,
   Image,
-  Component
+  Component,
+  TabBarIOS, NavigatorIOS
 } = React;
 
 var styles = StyleSheet.create({
@@ -138,7 +139,7 @@ class SearchPage extends Component {
         });
       });
   }
-  
+
   render() {
     var spinner = this.state.isLoading ?
     ( <ActivityIndicatorIOS
@@ -148,9 +149,14 @@ class SearchPage extends Component {
 
     console.log('SearchPage.render');
     return (
+      <TabBarIOS>
+        <TabBarIOS.Item title="React Native" selected={true}>
       <View style={styles.container}>
+       
+        
+        
       <Text style={styles.description}>
-      Search for houses to buy!
+      Engage with interesting people!!
       </Text>
       <Text style={styles.description}>
       Search by place-name, postcode or search near your location2.
@@ -186,6 +192,16 @@ class SearchPage extends Component {
       <Text style={styles.description}>{this.state.message}</Text>
 
       </View>
+      </TabBarIOS.Item>
+      <TabBarIOS.Item title="Foo" selected={false}>
+      <View>
+      <Text style={styles.description}>
+      
+      </Text>
+      </View>
+      </TabBarIOS.Item>
+      </TabBarIOS>
+      
       );
 }
 }
