@@ -38,6 +38,13 @@ class Welcome extends React.Component {
 };
 
 class YesNo extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: null
+    };
+  }
+
   render() {
     return (
       <React.NavigatorIOS
