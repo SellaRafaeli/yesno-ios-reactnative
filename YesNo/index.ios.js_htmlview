@@ -1,0 +1,112 @@
+var React = require('react-native')
+var {
+    AppRegistry,
+  Text, View, ListView, StyleSheet} = React
+
+var HTMLView = require('react-native-htmlview')
+
+var ContentView = React.createClass({
+  render() {
+    var htmlContent = '<div style="margin:100px"><p><b>bla</b><a href="">&hearts; nice job!</a></p></div>';
+    return (
+      <View>
+      <HTMLView
+        value={htmlContent}
+        onLinkPress={(url) => console.log('navigating to: ', url)}
+        stylesheet={styles}
+      />
+      <HTMLView
+        value={htmlContent}
+        onLinkPress={(url) => console.log('navigating to: ', url)}
+        stylesheet={styles}
+      />
+      <HTMLView
+        value={htmlContent}
+        onLinkPress={(url) => console.log('navigating to: ', url)}
+        stylesheet={styles}
+      />
+      <HTMLView
+        value={htmlContent}
+        onLinkPress={(url) => console.log('navigating to: ', url)}
+        stylesheet={styles}
+      />
+      <HTMLView
+        value={htmlContent}
+        onLinkPress={(url) => console.log('navigating to: ', url)}
+        stylesheet={styles}
+      />
+      <HTMLView
+        value={htmlContent}
+        onLinkPress={(url) => console.log('navigating to: ', url)}
+        stylesheet={styles}
+      />
+      <HTMLView
+        value={htmlContent}
+        onLinkPress={(url) => console.log('navigating to: ', url)}
+        stylesheet={styles}
+      />
+      <HTMLView
+        value={htmlContent}
+        onLinkPress={(url) => console.log('navigating to: ', url)}
+        stylesheet={styles}
+      />
+      <HTMLView
+        value={htmlContent}
+        onLinkPress={(url) => console.log('navigating to: ', url)}
+        stylesheet={styles}
+      />
+      <HTMLView
+        value={htmlContent}
+        onLinkPress={(url) => console.log('navigating to: ', url)}
+        stylesheet={styles}
+      />
+      <HTMLView
+        value={htmlContent}
+        onLinkPress={(url) => console.log('navigating to: ', url)}
+        stylesheet={styles}
+      />
+      <HTMLView
+        value={htmlContent}
+        onLinkPress={(url) => console.log('navigating to: ', url)}
+        stylesheet={styles}
+      />
+      <HTMLView
+        value={htmlContent}
+        onLinkPress={(url) => console.log('navigating to: ', url)}
+        stylesheet={styles}
+      />
+      <HTMLView
+        value={htmlContent}
+        onLinkPress={(url) => console.log('navigating to: ', url)}
+        stylesheet={styles}
+      />
+      <HTMLView
+        value={htmlContent}
+        onLinkPress={(url) => console.log('navigating to: ', url)}
+        stylesheet={styles}
+      />
+      <HTMLView
+        value={htmlContent}
+        onLinkPress={(url) => console.log('navigating to: ', url)}
+        stylesheet={styles}
+      />
+      </View>
+    )
+  }
+})
+
+var styles = StyleSheet.create({
+  HTMLView:{
+    'marginTop':100
+  },
+  p: {
+    margin:100
+  },
+  a: {
+    fontWeight: '300',
+    margin: 100,
+    color: '#FF3366', // pink links
+  },
+})
+
+AppRegistry.registerComponent('YesNo', () => ContentView);
