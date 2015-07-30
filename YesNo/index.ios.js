@@ -5,7 +5,7 @@
 'use strict';
 
 var React = require('react-native');
-var SearchPage = require('./searchPage');
+var LoginPage = require('./LoginPage');
 
 
 var {
@@ -43,8 +43,8 @@ class YesNo extends React.Component {
       <React.NavigatorIOS
         style={styles2.container}
         initialRoute={{
-          title: 'YesNo Native World',
-          component: SearchPage,
+          title: 'welcome to yes.no',
+          component: LoginPage,
         }}/>
     );
   }
