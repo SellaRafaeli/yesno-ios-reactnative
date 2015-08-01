@@ -6,15 +6,40 @@ var {
   ListView,
   TabBarIOS,
   Text,
+  TouchableHighlight,
   View,
 } = React;
 
+
+var userPosts = [
+  {q_text: 'user question 1?', a_text: 'user answer 1'},
+  {q_text: 'user question 2?', a_text: 'user answer 2'}
+]
+
+var basicPosts = [
+  {q_text: 'basic question 1?', a_text: 'basic answer 1'},
+  {q_text: 'basic question 2?', a_text: 'basic answer 2'} 
+]
+
 function getPosts(obj) {  
   console.log("getPosts");
-  var postsRoute = 'http://localhost:9292/mobile/posts/?opts[page]=1&opts[type]=user_posts_type&opts[feed]=true&mobile_token=9907e080-5d1b-400c-82c1-8d1bb9409b29'
-  fetch(postsRoute).then(response => response.json()).then(json => obj.handleNewPosts(json));
-  }
+//  debugger
+  var opts = obj.opts || {};
+  var res;
+  if (opts.username) {
 
+    //var postsRoute = 'http://localhost:9292/mobile/posts/?opts[page]=0&opts[type]=user_posts_type&opts[username]='+opts.username+'&mobile_token=9907e080-5d1b-400c-82c1-8d1bb9409b29'
+    res = { posts: userPosts }
+  } 
+  else {
+    res = {posts: basicPosts}
+    //var postsRoute = 'http://localhost:9292/mobile/posts/?opts[page]=1&opts[type]=user_posts_type&opts[feed]=true&mobile_token=9907e080-5d1b-400c-82c1-8d1bb9409b29'  
+  }
+  
+  //
+  obj.handleNewPosts(res)
+  //works: fetch(postsRoute).then(response => response.json()).then(json => obj.handleNewPosts(json));
+  }
 
 var TabBarExample = React.createClass({
   statics: {
@@ -25,40 +50,70 @@ var TabBarExample = React.createClass({
   displayName: 'TabBarExample',
 
   getInitialState: function() {
+    //debugger
+    //getPosts(this);
     var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-    var arr = [];
-    for (var i=0; i<30; i++) { console.log(i); arr.push("row and now his watch has ended. For Olly! Hooray hooray hooray and some more words. Thank you for the music! -- "+i) }
+    var fakeArr = [];
+    
+    for (var i=0; i<30; i++) { 
+      //console.log(i); 
+      fakeArr.push({q_text: "some question?", a_text:"row and now his watch has ended. For Olly! Hooray hooray hooray and some more words. Thank you for the music! -- "+i}) }
+
+    var arr = this.props.posts || fakeArr;
+    
     return {
-      selectedTab: 'redTab',
+      ds: ds,
+      selectedTab: 'greenTab',
       dataSource: ds.cloneWithRows(arr),
       notifCount: 0,
       presses: 0,
       posts: 'blaPosts'
     };
+
+
   },
 
   handleNewPosts: function(postsJson) {
-    console.log("handleNewPosts");     
-    var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-    this.setState({dataSource: ds.cloneWithRows(postsJson.posts)});
+    
+    console.log("handleNewPosts");
+    console.log(this.ds);     
+    //var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    this.setState({dataSource: this.state.ds.cloneWithRows(postsJson.posts)});
+  },
+
+  _newTab: function(opts) {
+    this.props.navigator.push({
+      title: 'Results',
+      //component: SearchResults,
+      component: TabBarExample,
+      passProps: opts
+    });
   },
 
   _renderRow: function(rowData) {
     return (
-      <View
+      <TouchableHighlight
         onPress={() => {
-          debugger
+          //debugger
+          
             console.log("pressed row view!");
+    //        debugger
+            var opts = {
+              username: "sella-rafaeli"
+            }
+            this._newTab({posts: userPosts});  
           }}
       >
+      <View>
       <Text style={styles.item_q}
-        onPress={() => {
-          debugger
+        zonPress={() => {
+          //debugger
             console.log("pressed row text!");
           }}
       >{rowData.q_text}</Text>
       <Text style={styles.item_a}>{rowData.a_text}</Text>
       </View>
+      </TouchableHighlight>
     )
   },
   _renderContent: function(color: string, pageText: string, num?: number) {
@@ -148,6 +203,8 @@ var styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     padding: 0,
+    paddingLeft: 5,
+    paddingRight: 5,
     backgroundColor: '#F6F6F6',
   },
   tabText: {

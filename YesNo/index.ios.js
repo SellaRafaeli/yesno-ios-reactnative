@@ -6,7 +6,7 @@
 
 var React = require('react-native');
 var LoginPage = require('./LoginPage');
-
+var TabBarExample = require('./TabBarExample');
 
 var {
   AppRegistry,
@@ -51,7 +51,9 @@ class YesNo extends React.Component {
         style={styles2.container}
         initialRoute={{
           title: 'welcome to yes.no',
-          component: LoginPage,
+          //component: LoginPage,
+          component: TabBarExample,
+
         }}/>
     );
   }
